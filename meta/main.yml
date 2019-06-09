@@ -1,0 +1,21 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: elk-stack
+  author: tmeralus
+  description: Elasticsearch, Kibana, Logstash Monitoring stack installation for Linux.
+  issue_tracker_url: https://github.com/tmeralus/ansible-role-elk-stack/issues
+  company: ""
+  license: "license (GPLv3, )"
+  min_ansible_version: 2.5.4
+  platforms:
+    - name: EL
+      versions:
+        - all
+  galaxy_tags:
+    - elastic
+    - kibana
+    - Logstash
+    - elasticsearch
+    - Monitoring
