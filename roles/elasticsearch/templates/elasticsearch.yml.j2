@@ -1,0 +1,11 @@
+cluster.name: "{{ es_cluster.name }}-cluster"
+path.data: "{{ es_path.data }}"
+path.logs: "{{ es_path.logs }}"
+http.port: "{{ es_http.port }}"
+network.host: "{{ es_network.host }}"
+node.name: "{{ es_node.name }}-stack"
+node.master: "{{ es_node.master }}"
+
+#bootstrap.memory_lock: true
+#discovery.zen.ping.unicast.hosts: ["host1", "host2"]
+#discovery.zen.minimum_master_nodes: 3

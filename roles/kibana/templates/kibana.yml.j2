@@ -1,0 +1,6 @@
+# Kibana is served by a back end server. This setting specifies the port to use.
+server.port: "{{ kibana_server.port }}"
+
+server.host: "{{ kibana_server.host }}"
+elasticsearch.hosts: ["http://{{ es_network.host }}:{{ es_http.port }}"]
+kibana.index: "(( kibana_kibana.index ))"

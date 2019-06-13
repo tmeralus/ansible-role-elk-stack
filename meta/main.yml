@@ -1,11 +1,4 @@
 ---
-dependencies:
-  - java
-  - elasticsearch
-  - logstash
-  - kibana
-
-
 galaxy_info:
   role_name: elk-stack for CentOS
   author: tmeralus
@@ -24,3 +17,9 @@ galaxy_info:
     - Logstash
     - elasticsearch
     - Monitoring
+
+dependencies:
+  - java
+  - elasticsearch
+  - logstash
+  - kibana

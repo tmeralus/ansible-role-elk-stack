@@ -1,0 +1,52 @@
+---
+
+ansible_system_user: ansible
+
+epel_repo: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+manage_firewall: true
+apache_reverse_proxy:
+# elasticsearch settings
+elk_server_ssl_cert_port: 8080
+es_cluster.name: dolly
+es_cluster:
+es_network.host: localhost
+es_node.name: dolly
+es_node.master: true
+es_path.data: /var/lib/elasticsearch-wazuh
+es_path.logs: /var/log/elasticsearch
+es_http.port: 9200
+elastic_version: 7.1.1
+elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_version }}/yum
+# KIBANA SETTINGS
+www_kibana_port: 80
+kibana_server.host: localhost
+kibana_server.host: 0.0.0.0
+kibana_server.port: 5601
+#elasticsearch.url: "http://{{ 123 }}:{{ es_http.port }}"
+kibana_kibana.index: ".kibana"
+kibana_logging.dest: /var/log/kibana.log
+kibana_logging.verbose: true
+kibana_user: root
+kibana_password:
+# LOGSTASH SETTINGS
+logging_backend: logstash
+logstash_syslog_port: 5044
+logstash_localsyslog_port: 5000
+syslog_listen_external: false
+logstash_http.host: "127.0.0.1"
+logstash_http.port: 9600-9700
+logstash_log.level: info # Options for log.level: fata | error | warn | info | debug | trace
+logstash_path.logs: /var/log/logstash
+logstash_http.host: "127.0.0.1"
+# ELK-BEAT SETTINGS
+es_local_port: 9200
+es_listen_external: false
+install_curator_tool: false
+xpack_elastic_user_password:
+install_elasticsearch_xpack: false
+install_kibana_xpack: false
+install_logstash_xpack: false
+install_metricbeat: false
+install_packetbeat: false
+install_heartbeat: false
