@@ -6,6 +6,7 @@ epel_repo: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rp
 yum_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 manage_firewall: true
 apache_reverse_proxy:
+
 # elasticsearch settings
 elk_server_ssl_cert_port: 8080
 es_cluster.name: dolly
@@ -18,6 +19,13 @@ es_path.logs: /var/log/elasticsearch
 es_http.port: 9200
 elastic_version: 7.1.1
 elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_version }}/yum
+bootstrap.memory_lock: "" # True | false
+discovery.zen.ping.unicast.hosts: ["host1", "host2"]
+discovery.zen.minimum_master_nodes: 3
+gateway.recover_after_nodes: 3
+action.destructive_requires_name: true
+
+
 # KIBANA SETTINGS
 www_kibana_port: 80
 kibana_server.host: localhost
@@ -27,8 +35,43 @@ kibana_server.port: 5601
 kibana_kibana.index: ".kibana"
 kibana_logging.dest: /var/log/kibana.log
 kibana_logging.verbose: true
+kibana_server.basePath:
 kibana_user: root
 kibana_password:
+
+
+#server.maxPayloadBytes: 1048576
+#server.name: "your-hostname"
+#elasticsearch.hosts: ["http://localhost:9200"]
+#elasticsearch.preserveHost: true
+#kibana.index: ".kibana"
+#kibana.defaultAppId: "home"
+#elasticsearch.username: "user"
+#elasticsearch.password: "pass"
+#server.ssl.enabled: false
+#server.ssl.certificate: /path/to/your/server.crt
+#server.ssl.key: /path/to/your/server.key
+#elasticsearch.ssl.certificate: /path/to/your/client.crt
+#elasticsearch.ssl.key: /path/to/your/client.key
+#elasticsearch.ssl.certificateAuthorities: [ "/path/to/your/CA.pem" ]
+#elasticsearch.ssl.verificationMode: full
+#elasticsearch.pingTimeout: 1500
+#elasticsearch.requestTimeout: 30000
+#elasticsearch.requestHeadersWhitelist: [ authorization ]
+#elasticsearch.customHeaders: {}
+#elasticsearch.shardTimeout: 30000
+#elasticsearch.startupTimeout: 5000
+#elasticsearch.logQueries: false
+#pid.file: /var/run/kibana.pid
+#logging.dest: stdout
+#logging.silent: false
+#logging.quiet: false
+#logging.verbose: false
+#ops.interval: 5000
+#i18n.locale: "en"
+
+
+
 # LOGSTASH SETTINGS
 logging_backend: logstash
 logstash_syslog_port: 5044

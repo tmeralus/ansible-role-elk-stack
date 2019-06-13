@@ -17,7 +17,6 @@
     dest=/etc/kibana/kibana.yml
     mode=0644
   become: true
-  ignore_errors: true
 
 - name: Populate elasticsearch index with local logs via rsyslog
   command: systemctl restart rsyslog.service

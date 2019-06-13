@@ -4,3 +4,7 @@ server.port: "{{ kibana_server.port }}"
 server.host: "{{ kibana_server.host }}"
 elasticsearch.hosts: ["http://{{ es_network.host }}:{{ es_http.port }}"]
 kibana.index: "(( kibana_kibana.index ))"
+
+{% if {{ kibana_server.basePath }} !== "" %}
+server.basePath: "{{ kibana_server.basePath }}"
+{% endif %}
