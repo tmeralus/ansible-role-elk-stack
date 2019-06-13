@@ -1,8 +1,13 @@
 ---
-dependencies: []
+dependencies:
+  - java
+  - elasticsearch
+  - logstash
+  - kibana
+
 
 galaxy_info:
-  role_name: elk-stack
+  role_name: elk-stack for CentOS
   author: tmeralus
   description: Elasticsearch, Kibana, Logstash Monitoring stack installation for Linux.
   issue_tracker_url: https://github.com/tmeralus/ansible-role-elk-stack/issues
