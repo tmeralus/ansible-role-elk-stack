@@ -1,21 +1,15 @@
-cluster.name: "{{ es_cluster.name }}-cluster"
-path.data: "{{ es_path.data }}"
-path.logs: "{{ es_path.logs }}"
-http.port: "{{ es_http.port }}"
-network.host: "{{ es_network.host }}"
-node.name: "{{ es_node.name }}-stack"
-node.master: "{{ es_node.master }}"
+# Config File for Elasticsearch
+#
+cluster.name: "{{ es_cluster_name }}-cluster"
+path.data: "{{ es_path_data }}"
+path.logs: "{{ es_path_logs }}"
+http.port: "{{ es_http_port }}"
+network.host: "{{ es_network_host }}"
+node.name: "{{ es_node_name }}"
+node.master: "{{ es_node_master }}"
 
-
-{% if es_listen_external %}
-network.host: 0.0.0.0
-{% endif %}
-{% if not es_listen_external %}
-#network.host: {{ ansible_default_ipv4.address }}
-{% endif %}
-
-#bootstrap.memory_lock: "{{ bootstrap.memory_lock }}"
-#discovery.zen.ping.unicast.hosts: "{{ discovery.zen.ping.unicast.hosts }}"
-#discovery.zen.minimum_master_nodes: "{{ discovery.zen.minimum_master_nodes }}"
-#gateway.recover_after_nodes: "{{ gateway.recover_after_nodes }}"
-#action.destructive_requires_name: "{{ action.destructive_requires_name }}"
+bootstrap.memory_lock: "{{ bootstrap_memory_lock }}"
+discovery.zen.ping.unicast.hosts: "{{ discovery_zen_ping_unicast_hosts }}"
+discovery.zen.minimum_master_nodes: "{{ discovery_zen_minimum_master_nodes }}"
+gateway.recover_after_nodes: "{{ gateway_recover_after_nodes }}"
+action.destructive_requires_name: "{{ action_destructive_requires_name }}"

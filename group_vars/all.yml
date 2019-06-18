@@ -1,7 +1,5 @@
 ---
-
 ansible_system_user: ansible
-
 epel_repo: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 manage_firewall: true
@@ -9,79 +7,45 @@ apache_reverse_proxy:
 
 # elasticsearch settings
 elk_server_ssl_cert_port: 8080
-es_cluster.name: dolly
-es_cluster:
-es_network.host: localhost
-es_node.name: dolly
-es_node.master: true
-es_path.data: /var/lib/elasticsearch-wazuh
-es_path.logs: /var/log/elasticsearch
-es_http.port: 9200
+es_cluster_name: dolly
+es_cluster: dolly
+es_network_host: localhost
+es_node_name: dolly-test
+es_node_master: true
+es_path_data: /var/lib/elasticsearch-wazuh
+es_path_logs: /var/log/elasticsearch
+es_http_port: 9200
 elastic_version: 7.1.1
 elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_version }}/yum
-bootstrap.memory_lock: "" # True | false
-discovery.zen.ping.unicast.hosts: ["host1", "host2"]
-discovery.zen.minimum_master_nodes: 3
-gateway.recover_after_nodes: 3
-action.destructive_requires_name: true
-
+bootstrap_memory_lock: "" # True | false
+discovery_zen_ping_unicast_hosts: ["host1", "host2"]
+discovery_zen_minimum_master_nodes: 3
+gateway_recover_after_nodes: 3
+action_destructive_requires_name: true
 
 # KIBANA SETTINGS
 www_kibana_port: 80
-kibana_server.host: localhost
-kibana_server.host: 0.0.0.0
-kibana_server.port: 5601
-#elasticsearch.url: "http://{{ 123 }}:{{ es_http.port }}"
-kibana_kibana.index: ".kibana"
-kibana_logging.dest: /var/log/kibana.log
-kibana_logging.verbose: true
-kibana_server.basePath:
+kibana_server_host: 0.0.0.0
+kibana_server_port: 5601
+elasticsearch_url: "http://{{ 123 }}:{{ es_http_port }}"
+kibana_kibana_index: ".kibana"
+kibana_logging_dest: /var/log/kibana.log
+kibana_logging_verbose: true
+kibana_server_basePath:
 kibana_user: root
 kibana_password:
-
-
-#server.maxPayloadBytes: 1048576
-#server.name: "your-hostname"
-#elasticsearch.hosts: ["http://localhost:9200"]
-#elasticsearch.preserveHost: true
-#kibana.index: ".kibana"
-#kibana.defaultAppId: "home"
-#elasticsearch.username: "user"
-#elasticsearch.password: "pass"
-#server.ssl.enabled: false
-#server.ssl.certificate: /path/to/your/server.crt
-#server.ssl.key: /path/to/your/server.key
-#elasticsearch.ssl.certificate: /path/to/your/client.crt
-#elasticsearch.ssl.key: /path/to/your/client.key
-#elasticsearch.ssl.certificateAuthorities: [ "/path/to/your/CA.pem" ]
-#elasticsearch.ssl.verificationMode: full
-#elasticsearch.pingTimeout: 1500
-#elasticsearch.requestTimeout: 30000
-#elasticsearch.requestHeadersWhitelist: [ authorization ]
-#elasticsearch.customHeaders: {}
-#elasticsearch.shardTimeout: 30000
-#elasticsearch.startupTimeout: 5000
-#elasticsearch.logQueries: false
-#pid.file: /var/run/kibana.pid
-#logging.dest: stdout
-#logging.silent: false
-#logging.quiet: false
-#logging.verbose: false
-#ops.interval: 5000
-#i18n.locale: "en"
-
-
 
 # LOGSTASH SETTINGS
 logging_backend: logstash
 logstash_syslog_port: 5044
 logstash_localsyslog_port: 5000
 syslog_listen_external: false
-logstash_http.host: "127.0.0.1"
-logstash_http.port: 9600-9700
-logstash_log.level: info # Options for log.level: fata | error | warn | info | debug | trace
-logstash_path.logs: /var/log/logstash
-logstash_http.host: "127.0.0.1"
+logstash_http_host: "127.0.0.1"
+logstash_http_port: 9600-9700
+logstash_log_level: info # Options for log.level: fata | error | warn | info | debug | trace
+logstash_path_logs: /var/log/logstash
+logging_verbose: true
+
 # ELK-BEAT SETTINGS
 es_local_port: 9200
 es_listen_external: false
@@ -93,3 +57,33 @@ install_logstash_xpack: false
 install_metricbeat: false
 install_packetbeat: false
 install_heartbeat: false
+
+#server_maxPayloadBytes: 1048576
+#server_name: "your-hostname"
+#elasticsearch_hosts: ["http://localhost:9200"]
+#elasticsearch_preserveHost: true
+#kibana_index: ".kibana"
+#kibana_defaultAppId: "home"
+#elasticsearch_username: "user"
+#elasticsearch_password: "pass"
+#server_ssl_enabled: false
+#server_ssl_certificate: /path/to/your/server.crt
+#server_ssl_key: /path/to/your/server.key
+#elasticsearch_ssl_certificate: /path/to/your/client.crt
+#elasticsearch_ssl_key: /path/to/your/client.key
+#elasticsearch_ssl_certificateAuthorities: [ "/path/to/your/CA.pem" ]
+#elasticsearch_ssl_verificationMode: full
+#elasticsearch_pingTimeout: 1500
+#elasticsearch_requestTimeout: 30000
+#elasticsearch_requestHeadersWhitelist: [ authorization ]
+#elasticsearch_customHeaders: {}
+#elasticsearch_shardTimeout: 30000
+#elasticsearch_startupTimeout: 5000
+#elasticsearch_logQueries: false
+#pid_file: /var/run/kibana.pid
+#logging_dest: stdout
+#logging_silent: false
+#logging_quiet: false
+#logging_verbose: false
+#ops_interval: 5000
+#i18n_locale: "en"

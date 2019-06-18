@@ -24,9 +24,9 @@
 
 - name: Copy templated elasticsearch.yml
   template:
-    src=elasticsearch.yml.j2
-    dest=/etc/elasticsearch/elasticsearch.yml
-    mode=0660
+    src: "elasticsearch.yml.j2"
+    dest: "/etc/elasticsearch/elasticsearch.yml"
+    mode: 0660
   become: true
 
 - name: Check if system memory is greater than 64G

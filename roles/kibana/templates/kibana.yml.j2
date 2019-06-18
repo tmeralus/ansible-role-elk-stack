@@ -1,10 +1,8 @@
 # Kibana is served by a back end server. This setting specifies the port to use.
-server.port: "{{ kibana_server.port }}"
+server.host: {{ kibana_server_host }}
+server.port: {{ kibana_server_port }}
+elasticsearch.hosts: "http://"{{ es_network_host }}":"{{ es_http_port }}""
 
-server.host: "{{ kibana_server.host }}"
-elasticsearch.hosts: ["http://{{ es_network.host }}:{{ es_http.port }}"]
-kibana.index: "(( kibana_kibana.index ))"
-
-{% if {{ kibana_server.basePath }} !== "" %}
-server.basePath: "{{ kibana_server.basePath }}"
-{% endif %}
+kibana.index: "{{ kibana_kibana_index }}"
+logging.dest: "{{ logstash_path_logs }}"
+logging.verbose: "{{ logging_verbose }}"
