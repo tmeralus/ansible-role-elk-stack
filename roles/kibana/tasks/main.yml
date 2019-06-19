@@ -1,43 +1,53 @@
 ---
 - name: Copy kibana yum repo file
   copy:
-    src=kibana.repo
-    dest=/etc/yum.repos.d/kibana.repo
-    mode=0644
+    src: kibana.repo
+    dest: /etc/yum.repos.d/kibana.repo
+    mode: 0644
+  become: true
+
+- name: Install rsyslog and dependencies
+  yum:
+    name: rsyslog
+    state: present
   become: true
 
 - name: Install kibana rpms
   yum:
     name: kibana
+    state: present
   become: true
 
 - name: Copy templated kibana.yml
   template:
-    src=kibana.yml.j2
-    dest=/etc/kibana/kibana.yml
-    mode=0644
+    src: kibana.yml.j2
+    dest: /etc/kibana/kibana.yml
+    mode: 0644
   become: true
 
 - name: Populate elasticsearch index with local logs via rsyslog
-  command: systemctl restart rsyslog.service
-  ignore_errors: true
-  become: true
-
-- name: Start kibana service
-  command: systemctl start kibana
-#  service: name=kibana state=started enabled=true
+  command: systemctl restart rsyslog
+#  ignore_errors: true
   become: true
 
 - name: Enable kibana service
-  command: systemctl enable kibana
+  systemd:
+    name: kibana
+    state: started
+    enabled: yes
   become: true
 
-- name: Restart kibana server
-  command: systemctl restart kibana.service
-  become: true
+#- name: Enable kibana service
+#  command: systemctl enable kibana && systemctl start kibana
+#  become: true
+
+#- name: Restart kibana server
+#  command: systemctl restart kibana.service
+#  become: true
 
 - name: Check Filebeat forwarder SSL certificate
-  stat: path=/usr/share/logstash/beat-forwarder.crt
+  stat:
+    path: /usr/share/logstash/beat-forwarder.crt
   ignore_errors: true
   register: filebeat_forwarder_ssl_exists
   become: true
@@ -50,20 +60,11 @@
   when: (filebeat_forwarder_ssl_exists != 0)
   become: true
 
-# We need to insert data to create an initial index, query if it exists
-#- name: Check elasticsearch index for content
-#  uri:
-#    url=http://localhost:9200/_cat/indices
-#    method=GET
-#    return_content=yes
-#  register: elasticsearch_index
-#  when: not install_elasticsearch_xpack
-#  become: true
-
 # Populate elasticsearch with local syslog data
 - name: Populate elasticsearch index with local syslog data
-  lineinfile: dest=/etc/rsyslog.conf \
-          line="*.* @localhost:{{ logstash_localsyslog_port }}"
+  lineinfile:
+    dest: /etc/rsyslog.conf
+    line: "*.* @localhost:{{ logstash_localsyslog_port }}"
   register: rsyslog_updated
   become: true
 

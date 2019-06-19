@@ -5,7 +5,7 @@
     - group_vars/all.yml
   roles:
     - { role: elasticsearch }
-    - { role: logstash, when: ((logging_backend is none) or (logging_backend == 'logstash')) }
+    - { role: logstash }
     - { role: kibana }
     - { role: xpack, when: ((install_elasticsearch_xpack|bool) or (install_kibana_xpack|bool) or (install_logstash_xpack|bool)) }
     - { role: firewall, when: manage_firewall|bool }

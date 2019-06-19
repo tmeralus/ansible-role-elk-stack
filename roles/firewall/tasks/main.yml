@@ -7,7 +7,7 @@
 ####### BEGIN ELASTICSEARCH FW RULES #########
 # we will be opening TCP/9200 for ES
 # if es_listen_external: true is set
-# this is needed for elastic connector in browbeat
+# this is needed for elastic beat connections
 # we will also listen on TCP/5000 for accepting
 # general syslog traffic if syslog_listen_external: true
 # is set.
@@ -205,7 +205,7 @@
 
 ## END Logstash firewall rules ##
 
-####### BEGIN NGINX FIREWALL RULES #########
+####### BEGIN KIBANA FIREWALL RULES #########
 
 # we need TCP/80 and TCP/8080 open
 # determine firewall status and take action
@@ -235,8 +235,8 @@
     - skip_ansible_lint
   become: true
 
-- name: Determine if TCP/{{www_kibana_port}} is already active
-  shell: firewall-cmd --list-ports | egrep -q "^{{www_kibana_port}}/tcp"
+- name: Determine if TCP/{{kibana_server_port}} is already active
+  shell: firewall-cmd --list-ports | egrep -q "^{{kibana_server_port}}/tcp"
   ignore_errors: true
   register: firewalld_kibana_port_exists
   no_log: true
@@ -247,18 +247,18 @@
   become: true
 
 # add firewall rule via firewall-cmd
-- name: Add firewall rule for TCP/{{www_kibana_port}} (firewalld)
+- name: Add firewall rule for TCP/{{kibana_server_port}} (firewalld)
   command: "{{ item }}"
   with_items:
-    - firewall-cmd --zone=public --add-port={{www_kibana_port}}/tcp --permanent
+    - firewall-cmd --zone=public --add-port={{kibana_server_port}}/tcp --permanent
     - firewall-cmd --reload
   ignore_errors: true
   become: true
   when: firewalld_in_use.rc == 0 and firewalld_is_active.rc == 0 and firewalld_kibana_port_exists.rc != 0
 
 # iptables-services
-- name: check firewall rules for TCP/{{www_kibana_port}} (iptables-services)
-  shell: grep "dport {{www_kibana_port}} \-j ACCEPT" /etc/sysconfig/iptables | wc -l
+- name: check firewall rules for TCP/{{kibana_server_port}} (iptables-services)
+  shell: grep "dport {{kibana_server_port}} \-j ACCEPT" /etc/sysconfig/iptables | wc -l
   ignore_errors: true
   register: iptables_kibana_port_exists
   failed_when: iptables_kibana_port_exists == 127
@@ -269,10 +269,10 @@
     - skip_ansible_lint
   become: true
 
-- name: Add firewall rule for TCP/{{www_kibana_port}} (iptables-services)
+- name: Add firewall rule for TCP/{{kibana_server_port}} (iptables-services)
   lineinfile:
     dest: /etc/sysconfig/iptables
-    line: '-A INPUT -p tcp -m tcp --dport {{www_kibana_port}} -j ACCEPT'
+    line: '-A INPUT -p tcp -m tcp --dport {{kibana_server_port}} -j ACCEPT'
     regexp: '^INPUT -i lo -j ACCEPT'
     insertbefore: '-A INPUT -i lo -j ACCEPT'
     backup: yes
@@ -350,118 +350,4 @@
   become: true
   notify: restart iptables
 
-## END NGINX FIREWALL RULES ##
-
-####### BEGIN FLUENTD FIREWALL RULES ########
-# we need TCP/42185 and TCP/9919 open
-# determine firewall status and take action
-# 1) use firewall-cmd if firewalld is utilized
-# 2) insert iptables rule if iptables is used
-
-# Firewalld
-- name: Determine if firewalld is in use
-  shell: systemctl is-enabled firewalld.service | egrep -qv 'masked|disabled'
-  ignore_errors: true
-  register: firewalld_in_use
-  no_log: true
-  become: true
-
-- name: Determine if firewalld is active
-  shell: systemctl is-active firewalld.service | grep -vq inactive
-  ignore_errors: true
-  register: firewalld_is_active
-  no_log: true
-  become: true
-
-- name: Determine if TCP/{{fluentd_syslog_port}} is already active
-  shell: firewall-cmd --list-ports | egrep -q "^{{fluentd_syslog_port}}/tcp"
-  ignore_errors: true
-  register: firewalld_fluentd_syslog_exists
-  no_log: true
-  become: true
-
-# add firewall rule via firewall-cmd
-- name: Add firewall rule for TCP/{{fluentd_syslog_port}} (firewalld)
-  command: "{{ item }}"
-  with_items:
-    - firewall-cmd --zone=public --add-port={{fluentd_syslog_port}}/tcp --permanent
-    - firewall-cmd --reload
-  ignore_errors: true
-  become: true
-  when: firewalld_in_use.rc == 0 and firewalld_is_active.rc == 0 and firewalld_fluentd_syslog_exists.rc != 0
-
-# iptables-services
-- name: check firewall rules for TCP/{{fluentd_syslog_port}} (iptables-services)
-  shell: grep "dport {{fluentd_syslog_port}} \-j ACCEPT" /etc/sysconfig/iptables | wc -l
-  ignore_errors: true
-  register: iptables_fluentd_syslog_exists
-  failed_when: iptables_fluentd_syslog_exists == 127
-  no_log: true
-  become: true
-
-- name: Add firewall rule for TCP/{{fluentd_syslog_port}} (iptables-services)
-  lineinfile:
-    dest: /etc/sysconfig/iptables
-    line: '-A INPUT -p tcp -m tcp --dport {{fluentd_syslog_port}} -j ACCEPT'
-    regexp: '^INPUT -i lo -j ACCEPT'
-    insertbefore: '-A INPUT -i lo -j ACCEPT'
-    backup: yes
-  when: firewalld_in_use.rc != 0 and firewalld_is_active.rc != 0 and iptables_fluentd_syslog_exists.stdout|int == 0
-  register: iptables_needs_restart
-  become: true
-  notify: restart iptables
-
-# Firewalld
-- name: Determine if firewalld is in use
-  shell: systemctl is-enabled firewalld.service | egrep -qv 'masked|disabled'
-  ignore_errors: true
-  register: firewalld_in_use
-  no_log: true
-  become: true
-
-- name: Determine if firewalld is active
-  shell: systemctl is-active firewalld.service | grep -vq inactive
-  ignore_errors: true
-  register: firewalld_is_active
-  no_log: true
-  become: true
-
-- name: Determine if TCP/{{fluentd_http_port}} is already active
-  shell: firewall-cmd --list-ports | egrep -q "^{{fluentd_http_port}}/tcp"
-  ignore_errors: true
-  register: firewalld_fluentd_http_exists
-  no_log: true
-  become: true
-
-# add firewall rule via firewall-cmd
-- name: Add firewall rule for TCP/{{fluentd_http_port}} (firewalld)
-  command: "{{ item }}"
-  with_items:
-    - firewall-cmd --zone=public --add-port={{fluentd_http_port}}/tcp --permanent
-    - firewall-cmd --reload
-  ignore_errors: true
-  become: true
-  when: firewalld_in_use.rc == 0 and firewalld_is_active.rc == 0 and firewalld_fluentd_http_exists.rc != 0
-
-# iptables-services
-- name: check firewall rules for TCP/{{fluentd_http_port}} (iptables-services)
-  shell: grep "dport {{fluentd_http_port}} \-j ACCEPT" /etc/sysconfig/iptables | wc -l
-  ignore_errors: true
-  register: iptables_fluentd_http_exists
-  failed_when: iptables_fluentd_http_exists == 127
-  no_log: true
-  become: true
-
-- name: Add firewall rule for TCP/{{fluentd_http_port}} (iptables-services)
-  lineinfile:
-    dest: /etc/sysconfig/iptables
-    line: '-A INPUT -p tcp -m tcp --dport {{fluentd_http_port}} -j ACCEPT'
-    regexp: '^INPUT -i lo -j ACCEPT'
-    insertbefore: '-A INPUT -i lo -j ACCEPT'
-    backup: yes
-  when: firewalld_in_use.rc != 0 and firewalld_is_active.rc != 0 and iptables_fluentd_http_exists.stdout|int == 0
-  register: iptables_needs_restart
-  become: true
-  notify: restart iptables
-
-## END FLUENTD FIREWALL RULES ##
+## END KIBANA FIREWALL RULES ##

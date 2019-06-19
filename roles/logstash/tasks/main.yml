@@ -5,34 +5,35 @@
 
 - name: Copy logstash yum repo file
   copy:
-    src=logstash.repo
-    dest=/etc/yum.repos.d/logstash.repo
-    owner=root
-    group=root
-    mode=0644
+    src: logstash.repo
+    dest: /etc/yum.repos.d/logstash.repo
+    owner: root
+    group: root
+    mode: 0644
   become: true
 
 - name: Install logstash rpms
   yum:
     name: logstash
+    state: present 
   become: true
 
 - name: Copy logstash filter configuration
   template:
-    src=logstash.conf.j2
-    dest=/etc/logstash/conf.d/logstash.conf
-    owner=logstash
-    group=logstash
-    mode=0644
+    src: logstash.conf.j2
+    dest: /etc/logstash/conf.d/logstash.conf
+    owner: logstash
+    group: logstash
+    mode: 0644
   become: true
 
 - name: Load OpenSSL CA Extended Configuration
   template:
-    src=openssl_extras.cnf.j2
-    dest=/etc/pki/tls/openssl_extras.cnf
-    owner=root
-    group=root
-    mode=0644
+    src: openssl_extras.cnf.j2
+    dest: /etc/pki/tls/openssl_extras.cnf
+    owner: root
+    group: root
+    mode: 0644
   become: true
 
 - name: Check OpenSSL SANs (SubjectAltName) entry for CA
@@ -55,42 +56,14 @@
   when: subjectAltName_exists.stdout|int == 0
   become: true
 
-#- name: Load filebeat JSON index template
-#  uri:
-#    url: http://localhost:9200/_template/filebeat?pretty
-#    method: POST
-#    body: "{{ lookup('file', 'filebeat-index-template.json') }}"
-#    body_format: json
-#    return_content: yes
-#  register: filebeatJSON_output
-#  until: '"json" in filebeatJSON_output and filebeatJSON_output.json.acknowledged == true'
-#  retries: 30
-#  delay: 10
-#  become: true
-#  when: not install_elasticsearch_xpack or not install_logstash_xpack or not install_kibana_xpack
-
-# X-Pack requires additional authentication
-#- name: Load filebeat JSON index template (X-Pack enabled)
-#  uri:
-#    url: http://localhost:9200/_template/filebeat?pretty
-#    method: POST
-#    user: elastic
-#    password: "{{xpack_elastic_user_password}}"
-#    body: "{{ lookup('file', 'filebeat-index-template.json') }}"
-#    body_format: json
-#    return_content: yes
-#  register: filebeatJSON_output
-#  until: '"json" in filebeatJSON_output and filebeatJSON_output.json.acknowledged == true'
-#  retries: 30
-#  delay: 10
-#  become: true
-#  when: install_elasticsearch_xpack|bool
-
 - name: Start or restart logstash service
   command: systemctl restart logstash.service
   ignore_errors: true
   become: true
 
 - name: Setup logstash service to autostart
-  service: name=logstash state=started enabled=true
+  service:
+    name: logstash
+    state: started
+    enabled: true
   become: true

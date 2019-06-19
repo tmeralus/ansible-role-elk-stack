@@ -4,5 +4,5 @@ server.port: {{ kibana_server_port }}
 elasticsearch.hosts: "http://"{{ es_network_host }}":"{{ es_http_port }}""
 
 kibana.index: "{{ kibana_kibana_index }}"
-logging.dest: "{{ logstash_path_logs }}"
-logging.verbose: "{{ logging_verbose }}"
+logging.dest: {{ kibana_logging_dest }}
+logging.verbose: {{ logging_verbose }}

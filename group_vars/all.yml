@@ -3,7 +3,6 @@ ansible_system_user: ansible
 epel_repo: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 manage_firewall: true
-apache_reverse_proxy:
 
 # elasticsearch settings
 elk_server_ssl_cert_port: 8080
@@ -36,10 +35,9 @@ kibana_user: root
 kibana_password:
 
 # LOGSTASH SETTINGS
-logging_backend: logstash
 logstash_syslog_port: 5044
 logstash_localsyslog_port: 5000
-syslog_listen_external: false
+syslog_listen_external: true
 logstash_http_host: "127.0.0.1"
 logstash_http_port: 9600-9700
 logstash_log_level: info # Options for log.level: fata | error | warn | info | debug | trace
@@ -48,7 +46,7 @@ logging_verbose: true
 
 # ELK-BEAT SETTINGS
 es_local_port: 9200
-es_listen_external: false
+es_listen_external: true
 install_curator_tool: false
 xpack_elastic_user_password:
 install_elasticsearch_xpack: false
