@@ -2,20 +2,21 @@
 #
 # Install/run logstash
 #
+- name: Include vars
+  include_vars:
+    file: group_vars/all.yml
 
-- name: Copy logstash yum repo file
-  copy:
-    src: logstash.repo
+- name: Copy templated logstash.repo.j2
+  template:
+    src: logstash.repo.j2
     dest: /etc/yum.repos.d/logstash.repo
-    owner: root
-    group: root
     mode: 0644
   become: true
 
 - name: Install logstash rpms
   yum:
     name: logstash
-    state: present 
+    state: present
   become: true
 
 - name: Copy logstash filter configuration
@@ -56,13 +57,8 @@
   when: subjectAltName_exists.stdout|int == 0
   become: true
 
-- name: Start or restart logstash service
-  command: systemctl restart logstash.service
-  ignore_errors: true
-  become: true
-
 - name: Setup logstash service to autostart
-  service:
+  systemd:
     name: logstash
     state: started
     enabled: true

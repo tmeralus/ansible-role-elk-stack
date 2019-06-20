@@ -1,7 +1,11 @@
 ---
-- name: Copy kibana yum repo file
-  copy:
-    src: kibana.repo
+- name: Include vars
+  include_vars:
+    file: group_vars/all.yml
+
+- name: Copy templated kibana.repo
+  template:
+    src: kibana.repo.j2
     dest: /etc/yum.repos.d/kibana.repo
     mode: 0644
   become: true
@@ -22,28 +26,30 @@
   template:
     src: kibana.yml.j2
     dest: /etc/kibana/kibana.yml
+    owner: kibana
+    group: kibana
     mode: 0644
   become: true
 
-- name: Populate elasticsearch index with local logs via rsyslog
-  command: systemctl restart rsyslog
-#  ignore_errors: true
+- name: Create Kibana log file
+  file:
+    path: /var/log/kibana.log
+    state: touch
+    owner: kibana
+    group: kibana
+    mode: 0644
   become: true
 
 - name: Enable kibana service
   systemd:
     name: kibana
-    state: started
     enabled: yes
   become: true
 
-#- name: Enable kibana service
-#  command: systemctl enable kibana && systemctl start kibana
-#  become: true
-
-#- name: Restart kibana server
-#  command: systemctl restart kibana.service
-#  become: true
+# systemd module for starting kibana fails
+- name: Start kibana service
+  command: systemctl start kibana
+  become: true
 
 - name: Check Filebeat forwarder SSL certificate
   stat:
@@ -58,18 +64,4 @@
     -out /usr/share/logstash/beat-forwarder.crt
   ignore_errors: true
   when: (filebeat_forwarder_ssl_exists != 0)
-  become: true
-
-# Populate elasticsearch with local syslog data
-- name: Populate elasticsearch index with local syslog data
-  lineinfile:
-    dest: /etc/rsyslog.conf
-    line: "*.* @localhost:{{ logstash_localsyslog_port }}"
-  register: rsyslog_updated
-  become: true
-
-- name: Restart rsyslogd to populate elasticsearch index
-  command: systemctl restart rsyslog.service
-  ignore_errors: true
-  when: rsyslog_updated != 0
   become: true

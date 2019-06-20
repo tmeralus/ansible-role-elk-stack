@@ -5,22 +5,32 @@ yum_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 manage_firewall: true
 
 # elasticsearch settings
+#es_cluster_name: "" # Defined in main to pull from
+#es_cluster: ""
+#es_node_name: ""
+es_listen_external: true
 elk_server_ssl_cert_port: 8080
-es_cluster_name: dolly
-es_cluster: dolly
 es_network_host: localhost
-es_node_name: dolly-test
-es_node_master: true
-es_path_data: /var/lib/elasticsearch-wazuh
+es_path_data: /var/lib/elasticsearch
 es_path_logs: /var/log/elasticsearch
-es_http_port: 9200
+es_http_port: "9200"
 elastic_version: 7.1.1
-elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_version }}/yum
-bootstrap_memory_lock: "" # True | false
-discovery_zen_ping_unicast_hosts: ["host1", "host2"]
-discovery_zen_minimum_master_nodes: 3
+elastic_repo_version: 7.x
+elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_repo_version }}/yum
+es_bootstrap_memory_lock: false # True | false
+
+#elasticsearch cluster settings
+#es_data_node: ""
+es_node_master: true
 gateway_recover_after_nodes: 3
-action_destructive_requires_name: true
+discovery_zen_minimum_master_nodes: 3
+action_destructive_requires_name: "true"
+es_discovery_zen_ping_unicast_hosts: ["127.0.0.1","127.0.0.2","127.0.0.3",]
+es_cluster_routing_allocation_same_shard_host: true
+
+# XPACK settings
+es_xpack_monitoring_history_duration: 1d
+es_xpack_monitoring_collection_enabled: true
 
 # KIBANA SETTINGS
 www_kibana_port: 80
@@ -46,7 +56,6 @@ logging_verbose: true
 
 # ELK-BEAT SETTINGS
 es_local_port: 9200
-es_listen_external: true
 install_curator_tool: false
 xpack_elastic_user_password:
 install_elasticsearch_xpack: false
@@ -55,33 +64,3 @@ install_logstash_xpack: false
 install_metricbeat: false
 install_packetbeat: false
 install_heartbeat: false
-
-#server_maxPayloadBytes: 1048576
-#server_name: "your-hostname"
-#elasticsearch_hosts: ["http://localhost:9200"]
-#elasticsearch_preserveHost: true
-#kibana_index: ".kibana"
-#kibana_defaultAppId: "home"
-#elasticsearch_username: "user"
-#elasticsearch_password: "pass"
-#server_ssl_enabled: false
-#server_ssl_certificate: /path/to/your/server.crt
-#server_ssl_key: /path/to/your/server.key
-#elasticsearch_ssl_certificate: /path/to/your/client.crt
-#elasticsearch_ssl_key: /path/to/your/client.key
-#elasticsearch_ssl_certificateAuthorities: [ "/path/to/your/CA.pem" ]
-#elasticsearch_ssl_verificationMode: full
-#elasticsearch_pingTimeout: 1500
-#elasticsearch_requestTimeout: 30000
-#elasticsearch_requestHeadersWhitelist: [ authorization ]
-#elasticsearch_customHeaders: {}
-#elasticsearch_shardTimeout: 30000
-#elasticsearch_startupTimeout: 5000
-#elasticsearch_logQueries: false
-#pid_file: /var/run/kibana.pid
-#logging_dest: stdout
-#logging_silent: false
-#logging_quiet: false
-#logging_verbose: false
-#ops_interval: 5000
-#i18n_locale: "en"
