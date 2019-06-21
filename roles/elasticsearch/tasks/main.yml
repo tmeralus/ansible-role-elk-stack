@@ -11,12 +11,19 @@
     name: libsemanage-python
   become: true
 
-- name: Copy templated elasticsearch.repo 
+- name: Copy templated elasticsearch.repo
   template:
     src: elasticsearch.repo.j2
     dest: /etc/yum.repos.d/elasticsearch.repo
     mode: 0644
   become: true
+
+#- name: Copy ELASTIC.REPO
+#  template:
+#    src: elastic.repo.j2
+#    dest: /etc/yum.repos.d/elastic.repo
+#    mode: 0644
+#  become: true
 
 - name: Install elasticsearch and openjdk
   yum:

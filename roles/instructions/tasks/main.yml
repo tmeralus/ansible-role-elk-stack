@@ -9,6 +9,13 @@
     enabled: true
   become: true
 
+- name: Restart Logstash
+  systemd:
+    name: logstash
+    state: started
+    enabled: true
+  become: true
+
 - name: Restart Kibana
   systemd:
     name: kibana

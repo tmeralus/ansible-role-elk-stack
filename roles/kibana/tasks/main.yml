@@ -31,6 +31,15 @@
     mode: 0644
   become: true
 
+- name: Copy kibana systemd config
+  template:
+    src: systemd.j2
+    dest: /etc/systemd/system/kibana.service
+    owner: kibana
+    group: kibana
+    mode: 0644
+  become: true
+
 - name: Create Kibana log file
   file:
     path: /var/log/kibana.log
@@ -44,11 +53,6 @@
   systemd:
     name: kibana
     enabled: yes
-  become: true
-
-# systemd module for starting kibana fails
-- name: Start kibana service
-  command: systemctl start kibana
   become: true
 
 - name: Check Filebeat forwarder SSL certificate
@@ -65,3 +69,14 @@
   ignore_errors: true
   when: (filebeat_forwarder_ssl_exists != 0)
   become: true
+
+- name: Start kibana service
+  systemd:
+    name: kibana
+    state: started
+  become: true
+
+# systemd module for starting kibana fails
+#- name: Start kibana service
+#  command: systemctl start kibana
+#  become: true
