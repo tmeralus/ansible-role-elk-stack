@@ -1,19 +1,4 @@
 ---
-#
-# Manage firewall rules if enabled
-# Change this in ../install/group_vars/all.yml
-#
-
-####### BEGIN ELASTICSEARCH FW RULES #########
-# we will be opening TCP/9200 for ES
-# if es_listen_external: true is set
-# this is needed for elastic beat connections
-# we will also listen on TCP/5000 for accepting
-# general syslog traffic if syslog_listen_external: true
-# is set.
-# determine firewall status and take action
-# 1) use firewall-cmd if firewalld is utilized
-# 2) insert iptables rule if iptables is used
 
 # Firewalld
 - name: Determine if firewalld is in use

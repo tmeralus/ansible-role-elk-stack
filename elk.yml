@@ -6,7 +6,7 @@
   vars:
     es_cluster: "{{ansible_hostname}}"
     es_node_name: "{{ansible_hostname}}"
-    es_cluster_name: "{{ansible_hostname}}"
+    es_cluster_name: "{{ansible_hostname}}"  
   roles:
     - { role: elasticsearch }
     - { role: logstash }

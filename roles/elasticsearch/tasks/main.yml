@@ -18,13 +18,6 @@
     mode: 0644
   become: true
 
-#- name: Copy ELASTIC.REPO
-#  template:
-#    src: elastic.repo.j2
-#    dest: /etc/yum.repos.d/elastic.repo
-#    mode: 0644
-#  become: true
-
 - name: Install elasticsearch and openjdk
   yum:
     name: [elasticsearch, java-openjdk-headless]
@@ -54,6 +47,14 @@
     state: directory
     owner: elasticsearch
     group: elasticsearch
+  become: true
+
+- name: Change elasticsearch jvm.options
+  replace:
+    path: /etc/elasticsearch/jvm.options
+    regexp: '-Xms1g'
+    replace: '{{ es_jvm_options }}'
+    backup: yes
   become: true
 
 - name: Setup elasticsearch service to autostart

@@ -17,8 +17,8 @@ es_http_port: "9200"
 elastic_version: 7.1.1
 elastic_repo_version: 7.x
 elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_repo_version }}/yum
-es_bootstrap_memory_lock: false # True | false
-
+es_bootstrap_memory_lock: true # True | false
+es_jvm_options: "-Xms4g"
 #elasticsearch cluster settings
 #es_data_node: ""
 es_node_master: true
@@ -29,6 +29,7 @@ es_discovery_zen_ping_unicast_hosts: ["127.0.0.1","127.0.0.2","127.0.0.3",]
 es_cluster_routing_allocation_same_shard_host: true
 
 # XPACK settings
+es_xpack: yes
 es_xpack_monitoring_history_duration: 1d
 es_xpack_monitoring_collection_enabled: true
 

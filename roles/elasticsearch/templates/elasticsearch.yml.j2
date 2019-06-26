@@ -4,7 +4,12 @@ path.data: {{ es_path_data }}
 path.logs: {{ es_path_logs }}
 http.port: {{ es_http_port }}
 network.host: {{ ansible_default_ipv4.address }}
-node.master: {{ es_node_master }}
+node.master: true
 node.name: {{ es_node_name }}
-
-bootstrap.memory_lock: {{ es_bootstrap_memory_lock }}
+{% if es_bootstrap_memory_lock %}
+bootstrap.memory_lock: true
+{% endif %}
+{% if es_xpack %}
+xpack.monitoring.history.duration: {{ es_xpack_monitoring_history_duration }}
+xpack.monitoring.collection.enabled: {{ es_xpack_monitoring_collection_enabled }}
+{% endif %}

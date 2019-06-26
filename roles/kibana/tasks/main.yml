@@ -70,13 +70,8 @@
   when: (filebeat_forwarder_ssl_exists != 0)
   become: true
 
-- name: Start kibana service
-  systemd:
-    name: kibana
-    state: started
-  become: true
-
-# systemd module for starting kibana fails
 #- name: Start kibana service
-#  command: systemctl start kibana
+#  service:
+#    name: kibana
+#    state: started
 #  become: true

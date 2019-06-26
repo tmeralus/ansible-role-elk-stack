@@ -1,7 +1,15 @@
 ---
-#
-# Install/run logstash
-#
+- name: Get Elasticsearch Host ip
+  vars:
+    data_yaml: |
+      #!jinja2: lstrip_blocks: True
+      {% for host in groups['elk'] %}
+        - {{ hostvars[host]['ansible_default_ipv4']['address'] }}
+      {% endfor %}
+  set_fact:
+    # Its ugly but this eliminates white spaces adn new lines to format the given value into the redis conf files correctly
+    es_host_port: "{{ data_yaml | from_yaml | to_nice_yaml | regex_replace('-','') | regex_replace('\n','') | regex_replace('^\\/', '') }}"
+
 - name: Include vars
   include_vars:
     file: group_vars/all.yml
@@ -23,6 +31,24 @@
   template:
     src: logstash.conf.j2
     dest: /etc/logstash/conf.d/logstash.conf
+    owner: logstash
+    group: logstash
+    mode: 0644
+  become: true
+
+- name: Copy 02-beats-input filter configuration
+  template:
+    src: 02-beats-input.conf.j2
+    dest: /etc/logstash/conf.d/02-beats-input.conf
+    owner: logstash
+    group: logstash
+    mode: 0644
+  become: true
+
+- name: Copy 03-logstash-syslog filter configuration
+  template:
+    src: 03-logstash-syslog.conf.j2
+    dest: /etc/logstash/conf.d/03-logstash-syslog.conf
     owner: logstash
     group: logstash
     mode: 0644
@@ -50,10 +76,6 @@
   shell: grep "{{ ansible_default_ipv4.address }}" /etc/pki/tls/openssl.cnf | wc -l
   ignore_errors: true
   register: subjectAltName_exists
-  tags:
-    # Skip ANSIBLE0012 Commands should not change things if nothing needs doing
-    # Need to understand if an entry exists
-    - skip_ansible_lint
   become: true
 
 - name: Add OpenSSL SANs (SubjectAltName) entry for CA
