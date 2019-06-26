@@ -17,9 +17,3 @@ galaxy_info:
     - Logstash
     - elasticsearch
     - Monitoring
-
-dependencies:
-  - java
-  - elasticsearch
-  - logstash
-  - kibana
