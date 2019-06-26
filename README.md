@@ -36,9 +36,13 @@ Session Cluster: saves data on disk (Setup for using Redis as a Sesssion store)
 
 ## Dependencies
 
-
 ## Test Playbook
  ansible-playbook -i inventory/local -l elk ansible-role-elk-stack/elk.yml
+
+ Inventory group should be labeled as [elk]
+ Example:
+ [elk]
+ dolly01
 
 License
 GNU GPLv3
