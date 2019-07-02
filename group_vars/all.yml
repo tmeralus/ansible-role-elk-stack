@@ -3,7 +3,6 @@ ansible_system_user: ansible
 epel_repo: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 manage_firewall: true
-
 # elasticsearch settings
 #es_cluster_name: "" # Defined in main to pull from
 #es_cluster: ""
@@ -27,12 +26,10 @@ discovery_zen_minimum_master_nodes: 3
 action_destructive_requires_name: "true"
 es_discovery_zen_ping_unicast_hosts: ["127.0.0.1","127.0.0.2","127.0.0.3",]
 es_cluster_routing_allocation_same_shard_host: true
-
 # XPACK settings
 es_xpack: yes
 es_xpack_monitoring_history_duration: 1d
 es_xpack_monitoring_collection_enabled: true
-
 # KIBANA SETTINGS
 www_kibana_port: 80
 kibana_server_host: 0.0.0.0
@@ -44,7 +41,6 @@ kibana_logging_verbose: true
 kibana_server_basePath:
 kibana_user: root
 kibana_password:
-
 # LOGSTASH SETTINGS
 logstash_syslog_port: 5044
 logstash_localsyslog_port: 5000
@@ -54,7 +50,6 @@ logstash_http_port: 9600-9700
 logstash_log_level: info # Options for log.level: fata | error | warn | info | debug | trace
 logstash_path_logs: /var/log/logstash
 logging_verbose: true
-
 # ELK-BEAT SETTINGS
 es_local_port: 9200
 install_curator_tool: false
