@@ -63,6 +63,31 @@
     mode: 0644
   become: true
 
+- name: Load OpenSSL CA Extended Configuration
+  template:
+    src: openssl_extras.cnf.j2
+    dest: /etc/pki/tls/openssl_extras.cnf
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Check OpenSSL SANs (SubjectAltName) entry for CA
+  shell: grep "{{ ansible_default_ipv4.address }}" /etc/pki/tls/openssl.cnf | wc -l
+  ignore_errors: true
+  register: subjectAltName_exists
+  become: true
+
+- name: Add OpenSSL SANs (SubjectAltName) entry for CA
+  lineinfile:
+    dest: /etc/pki/tls/openssl.cnf
+    line: 'subjectAltName = "IP: {{ ansible_default_ipv4.address }}"'
+    regexp: '^ Extensions for a typical CA'
+    insertbefore: '# Extensions for a typical CA'
+    backup: yes
+  when: subjectAltName_exists.stdout|int == 0
+  become: true
+
 - name: Setup logstash service to autostart
   systemd:
     name: logstash
