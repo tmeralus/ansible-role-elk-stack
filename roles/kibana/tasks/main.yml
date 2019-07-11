@@ -1,8 +1,4 @@
 ---
-- name: Include vars
-  include_vars:
-    file: group_vars/all.yml
-
 - name: Copy templated kibana.repo
   template:
     src: kibana.repo.j2
@@ -40,17 +36,26 @@
     mode: 0644
   become: true
 
+- name: Create Kibana log dir
+  file:
+    path: /var/log/kibana
+    state: directory
+#    owner: kibana
+#    group: kibana
+    mode: 0644
+  become: true
+
 - name: Create Kibana log file
   file:
-    path: /var/log/kibana.log
+    path: /var/log/kibana/kibana.log
     state: touch
-    owner: kibana
-    group: kibana
+#    owner: kibana
+#    group: kibana
     mode: 0644
   become: true
 
 - name: Enable kibana service
-  systemd:
+  service:
     name: kibana
     enabled: yes
   become: true
@@ -70,8 +75,8 @@
   when: (filebeat_forwarder_ssl_exists != 0)
   become: true
 
-#- name: Start kibana service
-#  service:
-#    name: kibana
-#    state: started
-#  become: true
+- name: Start kibana service
+  service:
+    name: kibana
+    state: started
+  become: true

@@ -10,10 +10,6 @@
     # Its ugly but this eliminates white spaces adn new lines to format the given value into the redis conf files correctly
     es_host_port: "{{ data_yaml | from_yaml | to_nice_yaml | regex_replace('-','') | regex_replace('\n','') | regex_replace('^\\/', '') }}"
 
-- name: Include vars
-  include_vars:
-    file: group_vars/all.yml
-
 - name: Copy templated logstash.repo.j2
   template:
     src: logstash.repo.j2

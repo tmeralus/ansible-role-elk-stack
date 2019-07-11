@@ -1,13 +1,11 @@
 ---
 - hosts: elk
-  remote_user: "{{ ansible_system_user }}"
-  vars_files:
-    - group_vars/all.yml
-  vars:
-    es_cluster: "{{ansible_hostname}}"
-    es_node_name: "{{ansible_hostname}}"
-    es_cluster_name: "{{ansible_hostname}}"
+#  vars:
+#    es_cluster: "{{ansible_hostname}}"
+#    es_node_name: "{{ansible_hostname}}"
+#    es_cluster_name: "{{ansible_hostname}}"
   roles:
+    - { role: java }
     - { role: elasticsearch }
     - { role: logstash }
     - { role: kibana }

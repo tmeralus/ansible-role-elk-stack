@@ -10,29 +10,12 @@ Session Cluster: saves data on disk (Setup for using Redis as a Sesssion store)
 
 
 ## Role Variables
-### all variables can be found under group_vars/all.yml file
+### all variables can be found in the defaults/main.yml
+## specific vars for elasticsearch names are in the playbook.yml file #
 - es_listen_external: true
-- elk_server_ssl_cert_port: 8080
-- es_network_host: localhost
-- es_path_data: /var/lib/elasticsearch
-- es_path_logs: /var/log/elasticsearch
-- es_http_port: "9200"
-- elastic_version: 7.1.1
-- elastic_repo_version: 7.x
-- elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_repo_version }}/yum
-- es_bootstrap_memory_lock: true # True | false
-- es_jvm_options: "-Xms4g"
-- sentinel_failtime: 800
-- ansible_system_user: ansible
-- epel_repo: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-- yum_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-- manage_firewall: true
-- es_node_master: true
-- gateway_recover_after_nodes: 3
-- discovery_zen_minimum_master_nodes: 3
-- action_destructive_requires_name: "true"
-- es_discovery_zen_ping_unicast_hosts: ["127.0.0.1","127.0.0.2","127.0.0.3",]
-- es_cluster_routing_allocation_same_shard_host: true
+- es_cluster: "{{ansible_hostname}}"
+- es_node_name: "{{ansible_hostname}}"
+- es_cluster_name: "{{ansible_hostname}}"
 
 ## Dependencies
 

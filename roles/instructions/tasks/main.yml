@@ -1,23 +1,35 @@
 ---
-#
-# print informational messages
-#
-- name: Restart elasticsearch
+- name: Check if systemd dir exists
+  stat:
+    path: /etc/systemd
+  register: systemd_check
+
+- name: systemd daemon reload
   systemd:
+    daemon_reload: yes
+  become: true
+  when: systemd_check is success
+
+- name: Restart elasticsearch
+  service:
     name: elasticsearch
     state: started
     enabled: true
   become: true
 
 - name: Restart Logstash
-  systemd:
+  service:
     name: logstash
     state: started
     enabled: true
   become: true
 
+#- name: Restart Kibana
+#  command: /etc/init.d/kibana start
+#  become: true
+
 - name: Restart Kibana
-  systemd:
+  service:
     name: kibana
     state: started
     enabled: true

@@ -9,5 +9,5 @@ elasticsearch.hosts: "http://{{ ansible_default_ipv4.address }}:{{ es_http_port 
 kibana.index: "{{ kibana_kibana_index }}"
 
 # Enables you specify a file where Kibana stores log output.
-logging.dest: {{ kibana_logging_dest }}
+logging.dest: "{{ kibana_logging_dest }}"
 logging.verbose: true

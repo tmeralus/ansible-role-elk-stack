@@ -1,11 +1,4 @@
 ---
-#
-# Install/run elasticsearch
-#
-- name: Include vars
-  include_vars:
-    file: group_vars/all.yml
-
 - name: Install libsemanage-python and dependencies
   yum:
     name: libsemanage-python
@@ -33,6 +26,8 @@
     mode: 0660
   become: true
 
+- import_tasks: heap-size.yml
+
 - name: Change file ownership of {{ es_path_data }}
   file:
     path: "{{ es_path_data }}"
@@ -49,16 +44,20 @@
     group: elasticsearch
   become: true
 
-- name: Change elasticsearch jvm.options
-  replace:
-    path: /etc/elasticsearch/jvm.options
-    regexp: '-Xms1g'
-    replace: '{{ es_jvm_options }}'
-    backup: yes
+- name: Copy elasticsearch jvm.options
+  template:
+    src: "jvm.options.j2"
+    dest: "/etc/elasticsearch/jvm.options"
+    owner: elasticsearch
+    group: elasticsearch
+    mode: 0660
   become: true
 
+- import_tasks: open_ssl.yml
+  when: open_ssl_check == "yes"
+
 - name: Setup elasticsearch service to autostart
-  systemd:
+  service:
     name: elasticsearch
     state: started
     enabled: true
