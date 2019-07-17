@@ -7,7 +7,9 @@ network.host: {{ ansible_default_ipv4.address }}
 node.master: true
 node.name: {{ es_node_name }}-stack
 
-{% if es_bootstrap_memory_lock %}
+{% if es_bootstrap_memory_lock and ansible_memtotal_mb >= '8192' %}
+bootstrap.memory_lock: true
+{%else%}
 bootstrap.memory_lock: false
 {% endif %}
 
