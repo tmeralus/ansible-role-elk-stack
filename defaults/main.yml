@@ -21,6 +21,7 @@ es_bootstrap_memory_lock: true # True | false
 es_jvm_heap_size: "-Xms4g"
 #elasticsearch cluster settings
 #es_data_node: ""
+es_node_check: true # determines is this will be a cluster or not
 es_node_master: true
 gateway_recover_after_nodes: 3
 discovery_zen_minimum_master_nodes: 3
