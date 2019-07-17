@@ -5,15 +5,19 @@ path.logs: {{ es_path_logs }}
 http.port: {{ es_http_port }}
 network.host: {{ ansible_default_ipv4.address }}
 node.master: true
-node.name: "{{ es_node_name }}-stack"
+node.name: {{ es_node_name }}-stack
+
 {% if es_bootstrap_memory_lock %}
 bootstrap.memory_lock: false
 {% endif %}
+
 {% if es_xpack %}
 xpack.monitoring.history.duration: {{ es_xpack_monitoring_history_duration }}
 xpack.monitoring.collection.enabled: true
 {% endif %}
-discovery.zen.ping.unicast.hosts: ["{{ ansible_default_ipv4.address}}"]
-discovery.seed_hosts: ["127.0.0.1", "[::1]", "{{ ansible_default_ipv4.address }}"]
-cluster.initial_master_nodes:
-  - {{ es_cluster_name }}
+
+#discovery.zen.ping.unicast.hosts: ["{{ ansible_default_ipv4.address}}"]
+#discovery.zen.ping.unicast.hosts: ["127.0.0.1", "[::1]", "{{ ansible_default_ipv4.address }}",]
+#discovery.seed_hosts: ["127.0.0.1", "{{ ansible_default_ipv4.address }}",]
+#cluster.initial_master_nodes:
+#  - {{ es_cluster_name }}
