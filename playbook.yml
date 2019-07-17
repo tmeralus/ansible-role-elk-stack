@@ -1,10 +1,7 @@
 ---
 - hosts: elk
-#  vars:
-#    es_cluster: "{{ansible_hostname}}"
-#    es_node_name: "{{ansible_hostname}}"
-#    es_cluster_name: "{{ansible_hostname}}"
-  roles:
+  roles: 
+    - { role: setup }
     - { role: java }
     - { role: elasticsearch }
     - { role: logstash }

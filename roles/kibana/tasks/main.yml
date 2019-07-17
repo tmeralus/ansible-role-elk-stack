@@ -22,8 +22,8 @@
   template:
     src: kibana.yml.j2
     dest: /etc/kibana/kibana.yml
-    owner: kibana
-    group: kibana
+    #owner: kibana
+    #group: kibana
     mode: 0644
   become: true
 
@@ -31,33 +31,18 @@
   template:
     src: systemd.j2
     dest: /etc/systemd/system/kibana.service
-    owner: kibana
-    group: kibana
-    mode: 0644
-  become: true
-
-- name: Create Kibana log dir
-  file:
-    path: /var/log/kibana
-    state: directory
-#    owner: kibana
-#    group: kibana
+    #owner: kibana
+    #group: kibana
     mode: 0644
   become: true
 
 - name: Create Kibana log file
   file:
-    path: /var/log/kibana/kibana.log
+    path: /var/log/kibana.log
     state: touch
-#    owner: kibana
-#    group: kibana
+    owner: kibana
+    group: kibana
     mode: 0644
-  become: true
-
-- name: Enable kibana service
-  service:
-    name: kibana
-    enabled: yes
   become: true
 
 - name: Check Filebeat forwarder SSL certificate
@@ -73,6 +58,12 @@
     -out /usr/share/logstash/beat-forwarder.crt
   ignore_errors: true
   when: (filebeat_forwarder_ssl_exists != 0)
+  become: true
+
+- name: Enable kibana service
+  service:
+    name: kibana
+    enabled: yes
   become: true
 
 - name: Start kibana service

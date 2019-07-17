@@ -12,10 +12,11 @@ Session Cluster: saves data on disk (Setup for using Redis as a Sesssion store)
 ## Role Variables
 ### all variables can be found in the defaults/main.yml
 ## specific vars for elasticsearch names are in the playbook.yml file #
-- es_listen_external: true
-- es_cluster: "{{ansible_hostname}}"
-- es_node_name: "{{ansible_hostname}}"
-- es_cluster_name: "{{ansible_hostname}}"
+{% for host in groups['elk'] %}
+{% if hostvars[host]['elk_role'] == 'master' %}
+network.host: {{ hostvars[host]['ansible_default_ipv4']['address'] }}
+{% endif %}
+{% endfor %}
 
 ## Dependencies
 
