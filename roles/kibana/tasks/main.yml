@@ -22,8 +22,6 @@
   template:
     src: kibana.yml.j2
     dest: /etc/kibana/kibana.yml
-    #owner: kibana
-    #group: kibana
     mode: 0644
   become: true
 
@@ -31,8 +29,6 @@
   template:
     src: systemd.j2
     dest: /etc/systemd/system/kibana.service
-    #owner: kibana
-    #group: kibana
     mode: 0644
   become: true
 
@@ -60,14 +56,8 @@
   when: (filebeat_forwarder_ssl_exists != 0)
   become: true
 
-- name: Enable kibana service
-  service:
+- name: Setup kibana service to autostart
+  systemd:
     name: kibana
     enabled: yes
-  become: true
-
-- name: Start kibana service
-  service:
-    name: kibana
-    state: started
   become: true
