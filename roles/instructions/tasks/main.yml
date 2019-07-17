@@ -43,6 +43,3 @@
 
 - name: Print login url instructions
   debug: msg="*** 1) Navigate to http://{{ ansible_fqdn }}:{{ kibana_server_port }}"
-
-- name: Print login credential instructions
-  debug: msg="***you may need to login with {{kibana_user}}/{{kibana_password}} ***"
