@@ -14,3 +14,6 @@ xpack.monitoring.history.duration: {{ es_xpack_monitoring_history_duration }}
 xpack.monitoring.collection.enabled: true
 {% endif %}
 discovery.zen.ping.unicast.hosts: ["{{ ansible_default_ipv4.address}}"]
+discovery.seed_hosts: ["127.0.0.1", "[::1]", "{{ ansible_default_ipv4.address }}"]
+cluster.initial_master_nodes:
+  - {{ es_cluster_name }}

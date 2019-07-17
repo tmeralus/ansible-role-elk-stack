@@ -14,7 +14,7 @@ es_network_host: localhost
 es_path_data: /var/lib/elasticsearch
 es_path_logs: /var/log/elasticsearch
 es_http_port: "9200"
-elastic_version: 7.1.1
+elastic_version: 7.2.0
 elastic_repo_version: 7.x
 elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_repo_version }}/yum
 es_bootstrap_memory_lock: true # True | false
@@ -41,7 +41,7 @@ kibana_kibana_index: ".kibana"
 kibana_logging_dest: /var/log/kibana.log
 kibana_logging_verbose: true
 kibana_server_basePath:
-  
+
 # LOGSTASH SETTINGS
 logstash_syslog_port: 5044
 logstash_localsyslog_port: 5000
