@@ -1,10 +1,4 @@
 ---
-- name: Define java_packages.
-  set_fact:
-    java_packages: "{{ __java_packages | list }}"
-  become: true
-  when: java_packages is not defined
-
 - name: Ensure Java is installed.
   package:
     name: "{{ java_packages }}"
@@ -17,5 +11,6 @@
     src: java_home.sh.j2
     dest: /etc/profile.d/java_home.sh
     mode: 0644
-  become: true  
+  become: true
   when: java_home is defined and java_home
+ 

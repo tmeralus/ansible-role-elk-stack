@@ -1,8 +1,12 @@
 ---
 - hosts: elk
-  roles: 
+  vars:
+    java_packages:
+      - java-1.8.0-openjdk
+  roles:
     - { role: setup }
     - { role: java }
+#    - { role: geerlingguy.java }
     - { role: elasticsearch }
     - { role: logstash }
     - { role: kibana }
