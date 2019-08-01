@@ -4,6 +4,12 @@ epel_repo: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rp
 yum_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 manage_firewall: true
 open_ssl_check: no
+### reverse proxy ###
+# Apache is the default used for SSL Kibana configuration
+# To use nginx with reverse proxy
+# change apache_reverse_proxy: false
+apache_reverse_proxy: true
+
 # elasticsearch settings
 es_cluster_name: "{{ansible_hostname}}"
 es_cluster: "{{ansible_hostname}}"

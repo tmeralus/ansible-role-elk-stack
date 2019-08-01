@@ -6,10 +6,11 @@
   roles:
     - { role: setup }
     - { role: java }
-#    - { role: geerlingguy.java }
     - { role: elasticsearch }
-    - { role: logstash }
-    - { role: kibana }
-    - { role: xpack, when: ((install_elasticsearch_xpack|bool) or (install_kibana_xpack|bool) or (install_logstash_xpack|bool)) }
-    - { role: firewall, when: manage_firewall|bool }
-    - { role: instructions }
+#    - { role: logstash }
+#    - { role: nginx, when: (apache_reverse_proxy is false) }
+#    - { role: apache, when: apache_reverse_proxy is true }
+#    - { role: kibana }
+#    - { role: xpack, when: ((install_elasticsearch_xpack|bool) or (install_kibana_xpack|bool) or (install_logstash_xpack|bool)) }
+#    - { role: firewall, when: manage_firewall|bool }
+#    - { role: instructions }
