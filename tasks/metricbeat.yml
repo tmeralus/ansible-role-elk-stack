@@ -1,7 +1,5 @@
 ---
-#
-# install/run packetbeat elk client
-#
+# 
 - name: Install metricbeat rpms
   yum:
     name: metricbeat
@@ -21,8 +19,10 @@
   command: systemctl start metricbeat.service
   ignore_errors: true
   become: true
-  when: ((metricbeat_needs_restart != 0) and (logging_backend != 'fluentd'))
 
 - name: Setup metricbeat service
-  service: name=metricbeat state=started enabled=true
+  service:
+    name: metricbeat
+    state: started
+    enabled: true
   become: true

@@ -1,15 +1,23 @@
 metricbeat.modules:
 - module: system
   metricsets:
+    #Per CPU Stats
     - cpu
+    #Per FileSystem Stats
     - filesystem
+    #Memory Stats
     - memory
-    - network
-    - process
-    - diskio
+    #Network Statistics
+    #- network
+    #Per Process Statistics
+    #- process
+    # IO stats
+    #- diskio
   enabled: true
   period: 10s
   cpu_ticks: false
+
+
 
 #Output section
 output:
@@ -36,7 +44,16 @@ output:
 # Configure what outputs to use when sending the data collected by the beat.
 # Multiple outputs may be used.
 output:
-  elasticsearch:
+
+  ### Elasticsearch as output
+  #elasticsearch:
+    # Array of hosts to connect to.
+    # Scheme and port can be left out and will be set to the default (http and 9200)
+    # In case you specify and additional path, the scheme is required: http://localhost:9200/path
+    # IPv6 addresses should always be defined as: https://[2001:db8::1]:9200
+
+    # Optional protocol and basic auth credentials. These are deprecated.
+    #protocol: "https"
     #username: "admin"
     #password: "s3cr3t"
 
@@ -52,6 +69,10 @@ output:
 
     # Proxy server URL
     # proxy_url: http://proxy:3128
+
+    # The number of times a particular Elasticsearch index operation is attempted. If
+    # the indexing operation doesn't succeed after this many retries, the events are
+    # dropped. The default is 3.
     #max_retries: 3
 
     # The maximum number of events to bulk in a single Elasticsearch bulk API index request.

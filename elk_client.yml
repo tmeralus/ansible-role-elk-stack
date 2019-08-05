@@ -1,10 +1,5 @@
 ---
 # Playbook to install the ELK client utilities
-- hosts: elk
-  remote_user: root
-  roles:
-    - { role: setup }
-    - { role: filebeat }
-    - { role: metricbeat, when: (install_metricbeat)}
-    - { role: packetbeat, when: (install_packetbeat)}
-    - { role: heartbeat, when: (install_heartbeat)}
+- hosts: all
+  tasks:
+      - import_tasks: "tasks/beats.yml"

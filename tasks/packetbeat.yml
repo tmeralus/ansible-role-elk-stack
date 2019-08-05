@@ -4,7 +4,7 @@
     dest: /etc/yum.repos.d/elasticsearch.repo
     mode: 0644
   become: true
-  
+
 - name: Install packetbeat rpms
   yum:
     name: [packetbeat, libpcap]
