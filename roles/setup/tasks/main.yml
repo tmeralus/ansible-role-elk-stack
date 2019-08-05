@@ -5,7 +5,7 @@
     state: present
   become: true
 
-- name: Get Elasticsearch Host ip
+- name: Get Elasticsearch Host IP
   vars:
     data_yaml: |
       #!jinja2: lstrip_blocks: True
@@ -15,7 +15,6 @@
   set_fact:
     # Its ugly but this eliminates white spaces adn new lines to format the given value into the conf files correctly
     es_host_port: "{{ data_yaml | from_yaml | to_nice_yaml | regex_replace('-','') | regex_replace('\n','') | regex_replace('^\\/', '') }}"
-
 
 - debug:
     msg: "elk master ip is {{ es_host_port }}"

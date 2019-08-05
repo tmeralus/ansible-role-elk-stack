@@ -6,7 +6,6 @@ manage_firewall: true
 open_ssl_check: no
 java_packages:
   - java-1.8.0-openjdk
-# elasticsearch settings
 es_cluster_name: "{{ansible_hostname}}"
 es_cluster: "{{ansible_hostname}}"
 es_node_name: "{{ansible_hostname}}"
@@ -16,7 +15,8 @@ es_network_host: localhost
 es_path_data: /var/lib/elasticsearch
 es_path_logs: /var/log/elasticsearch
 es_http_port: "9200"
-elastic_version: 7.3.0
+kibana_app_url: https://packages.wazuh.com/wazuhapp/wazuhapp-3.9.3_7.2.0.zip
+elastic_version: 7.2.0
 elastic_repo_version: 7.x
 elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_repo_version }}/yum
 es_bootstrap_memory_lock: true # True | false
@@ -56,11 +56,12 @@ logstash_path_logs: /var/log/logstash
 logging_verbose: true
 # ELK-BEAT SETTINGS
 es_local_port: 9200
-install_curator_tool: false
+install_curator_tool: true
 xpack_elastic_user_password:
-install_elasticsearch_xpack: false
-install_kibana_xpack: false
-install_logstash_xpack: false
+install_elasticsearch_xpack: true
+install_kibana_xpack: true
+install_logstash_xpack: true
 install_metricbeat: false
 install_packetbeat: false
 install_heartbeat: false
+install_wazuh_agent: true

@@ -1,6 +1,6 @@
 ---
 # Playbook to install the ELK client utilities
-- hosts: elk-client
+- hosts: elk
   remote_user: root
   roles:
     - { role: setup }

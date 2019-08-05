@@ -6,7 +6,6 @@ manage_firewall: true
 open_ssl_check: no
 java_packages:
   - java-1.8.0-openjdk
-# elasticsearch settings
 es_cluster_name: "{{ansible_hostname}}"
 es_cluster: "{{ansible_hostname}}"
 es_node_name: "{{ansible_hostname}}"
@@ -16,7 +15,7 @@ es_network_host: localhost
 es_path_data: /var/lib/elasticsearch
 es_path_logs: /var/log/elasticsearch
 es_http_port: "9200"
-elastic_version: 7.3.0
+elastic_version: 7.2.0
 elastic_repo_version: 7.x
 elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_repo_version }}/yum
 es_bootstrap_memory_lock: true # True | false
