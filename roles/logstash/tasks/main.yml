@@ -1,10 +1,10 @@
 ---
-- name: Copy templated logstash.repo.j2
-  template:
-    src: logstash.repo.j2
-    dest: /etc/yum.repos.d/logstash.repo
-    mode: 0644
-  become: true
+#- name: Copy templated logstash.repo.j2
+#  template:
+#    src: logstash.repo.j2
+#    dest: /etc/yum.repos.d/logstash.repo
+#    mode: 0644
+#  become: true
 
 - name: Install logstash rpms
   yum:

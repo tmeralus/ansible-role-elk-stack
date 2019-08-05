@@ -4,12 +4,8 @@ epel_repo: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rp
 yum_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 manage_firewall: true
 open_ssl_check: no
-### reverse proxy ###
-# Apache is the default used for SSL Kibana configuration
-# To use nginx with reverse proxy
-# change apache_reverse_proxy: false
-apache_reverse_proxy: true
-
+java_packages:
+  - java-1.8.0-openjdk
 # elasticsearch settings
 es_cluster_name: "{{ansible_hostname}}"
 es_cluster: "{{ansible_hostname}}"
@@ -20,13 +16,14 @@ es_network_host: localhost
 es_path_data: /var/lib/elasticsearch
 es_path_logs: /var/log/elasticsearch
 es_http_port: "9200"
-elastic_version: 7.1.1
+elastic_version: 7.3.0
 elastic_repo_version: 7.x
 elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_repo_version }}/yum
 es_bootstrap_memory_lock: true # True | false
 es_jvm_heap_size: "-Xms4g"
 #elasticsearch cluster settings
 #es_data_node: ""
+es_node_check: yes # determines is this will be a cluster or not
 es_node_master: true
 gateway_recover_after_nodes: 3
 discovery_zen_minimum_master_nodes: 3
@@ -47,8 +44,7 @@ kibana_kibana_index: ".kibana"
 kibana_logging_dest: /var/log/kibana.log
 kibana_logging_verbose: true
 kibana_server_basePath:
-kibana_user: root
-kibana_password:
+
 # LOGSTASH SETTINGS
 logstash_syslog_port: 5044
 logstash_localsyslog_port: 5000

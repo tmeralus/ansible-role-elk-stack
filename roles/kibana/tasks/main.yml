@@ -1,10 +1,10 @@
 ---
-- name: Copy templated kibana.repo
-  template:
-    src: kibana.repo.j2
-    dest: /etc/yum.repos.d/kibana.repo
-    mode: 0644
-  become: true
+#- name: Copy templated kibana.repo
+#  template:
+#    src: kibana.repo.j2
+#    dest: /etc/yum.repos.d/kibana.repo
+#    mode: 0644
+#  become: true
 
 - name: Install rsyslog and dependencies
   yum:
@@ -12,7 +12,7 @@
     state: present
   become: true
 
-- name: Install kibana rpms
+- name: Install kibana  
   yum:
     name: kibana
     state: present
