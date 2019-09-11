@@ -74,8 +74,10 @@
   become: true
 
 - name: Setup logstash service to autostart
-  systemd:
+  service:
     name: logstash
     state: started
     enabled: true
   become: true
+  ignore_errors: true
+#fails in docker container

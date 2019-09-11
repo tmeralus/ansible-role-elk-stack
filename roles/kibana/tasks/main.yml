@@ -12,7 +12,7 @@
     state: present
   become: true
 
-- name: Install kibana  
+- name: Install kibana
   yum:
     name: kibana
     state: present
@@ -57,7 +57,9 @@
   become: true
 
 - name: Setup kibana service to autostart
-  systemd:
+  service:
     name: kibana
     enabled: yes
   become: true
+  ignore_errors: true
+#fails in docker container

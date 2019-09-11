@@ -16,7 +16,7 @@ es_path_data: /var/lib/elasticsearch
 es_path_logs: /var/log/elasticsearch
 es_http_port: "9200"
 kibana_app_url: https://packages.wazuh.com/wazuhapp/wazuhapp-3.9.3_7.2.0.zip
-elastic_version: 7.2.0
+elastic_version: 7.3.0
 elastic_repo_version: 7.x
 elk_repo_url: https://artifacts.elastic.co/packages/{{ elastic_repo_version }}/yum
 es_bootstrap_memory_lock: true # True | false

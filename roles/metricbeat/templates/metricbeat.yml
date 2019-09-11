@@ -1,18 +1,12 @@
 metricbeat.modules:
 - module: system
   metricsets:
-    #Per CPU Stats
     - cpu
-    #Per FileSystem Stats
     - filesystem
-    #Memory Stats
     - memory
-    #Network Statistics
-    #- network
-    #Per Process Statistics
-    #- process
-    # IO stats
-    #- diskio
+    - network
+    - process
+    - diskio
   enabled: true
   period: 10s
   cpu_ticks: false
